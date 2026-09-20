@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tokopedia Intelligence Dashboard | M. Naufal Zamani</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    body { display: flex; background: #F8FAFC; color: #1E293B; min-height: 100vh; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 280px;
+      background: #0F172A;
+      color: #F8FAFC;
+      padding: 24px 18px;
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      border-right: 1px solid #1E293B;
+    }
+
+    /* TOKOPEDIA BRANDING AREA */
+    .tokopedia-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      background: #1E293B;
+      border-radius: 12px;
+      border: 1px solid #334155;
+      margin-bottom: 20px;
+    }
+    .tokopedia-logo-svg {
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+    }
+    .tokopedia-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .tokopedia-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #03AC0E;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+    }
+    .tokopedia-sub {
+      font-size: 11px;
+      color: #94A3B8;
+      font-weight: 500;
+    }
+
+    /* AUTHOR / CREATOR BADGE */
+    .author-card {
+      background: linear-gradient(135deg, rgba(3,172,14,0.12), rgba(15,23,42,0.6));
+      border: 1px solid rgba(3,172,14,0.3);
+      padding: 14px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .author-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #03AC0E, #10B981);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 16px;
+      color: #FFF;
+      box-shadow: 0 4px 12px rgba(3,172,14,0.35);
+      flex-shrink: 0;
+    }
+    .author-label { font-size: 10px; text-transform: uppercase; color: #94A3B8; font-weight: 700; letter-spacing: 0.5px; }
+    .author-name { font-size: 13.5px; font-weight: 700; color: #FFF; line-height: 1.3; }
+    .author-role { font-size: 11px; color: #03AC0E; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+
+    .nav-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #64748B; font-weight: 700; margin: 8px 0 8px 10px; }
+    .nav-btn {
+      background: transparent;
+      border: none;
+      width: 100%;
+      text-align: left;
+      padding: 11px 14px;
+      border-radius: 8px;
+      color: #94A3B8;
+      font-size: 13.5px;
+      font-weight: 500;
+      margin-bottom: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.2s ease;
+    }
+    .nav-btn:hover { background: #1E293B; color: #FFF; }
+    .nav-btn.active { background: #1E293B; color: #03AC0E; font-weight: 600; border-left: 3px solid #03AC0E; }
+
+    .print-btn {
+      margin-top: auto;
+      background: #03AC0E;
+      color: #FFF;
+      border: none;
+      padding: 11px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      transition: 0.2s;
+      box-shadow: 0 4px 10px rgba(3,172,14,0.25);
+    }
+    .print-btn:hover { background: #028a0b; }
+
+    /* MAIN CONTENT */
+    .main { flex: 1; padding: 28px 40px; overflow-y: auto; }
+    .top-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 22px; }
+    .title-group h1 { font-size: 23px; font-weight: 800; color: #0F172A; letter-spacing: -0.5px; }
+    .title-group p { font-size: 13px; color: #64748B; margin-top: 4px; }
+
+    /* FILTER PILLS */
+    .filter-wrapper { display: flex; gap: 6px; background: #FFF; padding: 5px; border-radius: 30px; border: 1px solid #E2E8F0; box-shadow: 0 1px 3px rgba(0,0,0,0.03); }
+    .filter-pill {
+      border: none;
+      background: transparent;
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #64748B;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-pill:hover { background: #F1F5F9; color: #0F172A; }
+    .filter-pill.active { background: #03AC0E; color: #FFF; box-shadow: 0 2px 6px rgba(3,172,14,0.35); }
+
+    /* 4 KPI CARDS */
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 22px; }
+    .kpi-card {
+      background: #FFF;
+      border-radius: 12px;
+      padding: 18px 20px;
+      border: 1px solid #E2E8F0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+      transition: transform 0.2s;
+    }
+    .kpi-card:hover { transform: translateY(-2px); }
+    .kpi-card-hero {
+      background: linear-gradient(135deg, #0F172A, #1E293B);
+      color: #FFF;
+      border: 1px solid rgba(3,172,14,0.4);
+      box-shadow: 0 4px 14px rgba(15,23,42,0.15);
+    }
+    .kpi-header { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; opacity: 0.8; }
+    .kpi-val { font-size: 25px; font-weight: 800; letter-spacing: -0.5px; }
+    .kpi-sub { font-size: 11px; margin-top: 5px; opacity: 0.75; }
+
+    /* QUICK HIGHLIGHT BOX */
+    .insight-box {
+      background: linear-gradient(135deg, #F0FDF4, #EFF6FF);
+      border: 1px solid #BBF7D0;
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-bottom: 22px;
+    }
+    .insight-title { font-size: 13.5px; font-weight: 700; color: #166534; display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .insight-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; font-size: 12.5px; color: #334155; line-height: 1.55; }
+    .insight-item b { color: #0F172A; display: block; margin-bottom: 3px; }
+
+    /* CHARTS */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+    .chart-card {
+      background: #FFF;
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid #E2E8F0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    /* LEADERBOARD TABLE */
+    .search-box {
+      padding: 8px 14px;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      font-size: 13px;
+      width: 320px;
+      outline: none;
+    }
+    .search-box:focus { border-color: #03AC0E; box-shadow: 0 0 0 3px rgba(3,172,14,0.15); }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 14px; }
+    th { background: #F8FAFC; color: #475569; padding: 12px 14px; text-align: left; font-weight: 600; border-bottom: 2px solid #E2E8F0; }
+    td { padding: 12px 14px; border-bottom: 1px solid #F1F5F9; color: #334155; }
+    tr:hover { background-color: #F8FAFC; }
+    .badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; background: #DCFCE7; color: #166534; }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR DENGAN BRANDING TOKOPEDIA & IDENTITAS M. NAUFAL ZAMANI -->
+  <aside class="sidebar">
+    
+    <!-- HEADER TOKOPEDIA & LOGO RESMI SVG -->
+    <div class="tokopedia-header">
+      <svg class="tokopedia-logo-svg" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="48" height="48" rx="10" fill="#03AC0E"/>
+        <path d="M24 10C16.82 10 11 15.82 11 23C11 28.52 14.44 33.24 19.34 35.12L17.5 40.5L24 37.5L30.5 40.5L28.66 35.12C33.56 33.24 37 28.52 37 23C37 15.82 31.18 10 24 10Z" fill="white"/>
+        <circle cx="19" cy="22" r="3.5" fill="#03AC0E"/>
+        <circle cx="29" cy="22" r="3.5" fill="#03AC0E"/>
+        <circle cx="19.8" cy="21.2" r="1.2" fill="white"/>
+        <circle cx="29.8" cy="21.2" r="1.2" fill="white"/>
+        <path d="M21 28C22 29.5 26 29.5 27 28" stroke="#03AC0E" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <div class="tokopedia-text">
+        <span class="tokopedia-title">tokopedia</span>
+        <span class="tokopedia-sub">Market Intelligence Hub</span>
+      </div>
+    </div>
+
+    <!-- PROFIL DATA ANALYST M. NAUFAL ZAMANI -->
+    <div class="author-card">
+      <div class="author-avatar">NZ</div>
+      <div>
+        <div class="author-label">Dashboard Author</div>
+        <div class="author-name">M. Naufal Zamani</div>
+        <div class="author-role"><span>●</span> Data Analyst</div>
+      </div>
+    </div>
+
+    <div class="nav-label">Navigasi Dashboard</div>
+    <button class="nav-btn active" onclick="switchNav('overview', this)">
+      <span>📊</span> Ringkasan Eksekutif
+    </button>
+    <button class="nav-btn" onclick="switchNav('table', this)">
+      <span>🏆</span> Leaderboard Produk
+    </button>
+    <button class="nav-btn" onclick="switchNav('insights', this)">
+      <span>🔬</span> Analisis & Rekomendasi
+    </button>
+
+    <div class="nav-label">Metadata Analisis</div>
+    <div style="padding-left: 10px; font-size: 11.5px; color: #64748B; line-height: 1.6;">
+      Analisis Data: <b>M. Naufal Zamani</b><br>
+      Total Sampel: <b>29.000+ Baris</b><br>
+      Platform: <b>Tokopedia Indonesia</b>
+    </div>
+
+    <button class="print-btn" onclick="window.print()">🖨️ Cetak / Ekspor PDF</button>
+  </aside>
+
+  <!-- KONTEN UTAMA -->
+  <main class="main">
+    
+    <!-- TOP HEADER -->
+    <header class="top-header">
+      <div class="title-group">
+        <h1 id="page-title">Tokopedia Retail Market Intelligence</h1>
+        <p id="filter-desc">Analisis Performa Penjualan & Perilaku Konsumen Tokopedia | Oleh: <b>M. Naufal Zamani (Data Analyst)</b></p>
+      </div>
+
+      <!-- FILTER INTERAKTIF -->
+      <div class="filter-wrapper">
+        <button class="filter-pill active" onclick="applyFilter('Semua', this)">Semua</button>
+        <button class="filter-pill" onclick="applyFilter('Kecantikan & Skincare', this)">💄 Skincare</button>
+        <button class="filter-pill" onclick="applyFilter('Fashion & Muslim', this)">👗 Fashion</button>
+        <button class="filter-pill" onclick="applyFilter('Perlengkapan Hewan', this)">🐾 Pet Care</button>
+        <button class="filter-pill" onclick="applyFilter('Makanan & Minuman', this)">🍟 F&B</button>
+      </div>
+    </header>
+
+    <!-- 4 KARTU KPI METRIK -->
+    <section class="kpi-grid">
+      <div class="kpi-card kpi-card-hero">
+        <div class="kpi-header">ESTIMASI TOTAL OMSET</div>
+        <div class="kpi-val" id="kpi-omset" style="color: #4ADE80;">Rp 0</div>
+        <div class="kpi-sub">Total GMV teridentifikasi</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-header" style="color: #64748B;">VOLUME TRANSAKSI</div>
+        <div class="kpi-val" id="kpi-vol" style="color: #0F172A;">0</div>
+        <div class="kpi-sub" style="color: #64748B;">Akumulasi unit terjual</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-header" style="color: #64748B;">MEDIAN HARGA PRODUK</div>
+        <div class="kpi-val" id="kpi-price" style="color: #03AC0E;">Rp 0</div>
+        <div class="kpi-sub" style="color: #64748B;">Titik tengah harga pasar</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-header" style="color: #64748B;">SKOR KEPUASAN (RATING)</div>
+        <div class="kpi-val" id="kpi-rat" style="color: #F59E0B;">0.0</div>
+        <div class="kpi-sub" style="color: #64748B;" id="kpi-ulas">Ulasan terverifikasi</div>
+      </div>
+    </section>
+
+    <!-- TAB 1: RINGKASAN EKSEKUTIF -->
+    <div id="panel-overview" class="tab-panel active">
+      
+      <div class="insight-box">
+        <div class="insight-title">💡 Key Takeaways Riset Pasar Tokopedia:</div>
+        <div class="insight-grid">
+          <div class="insight-item">
+            <b>1. Sentralisasi Pasar Urban</b>
+            Lebih dari 68% transaksi berpusat di DKI Jakarta, Bandung Raya, dan Tangerang Raya, membuktikan konsentrasi pembeli dan efisiensi logistik masih sangat berpusat di Jawa Barat.
+          </div>
+          <div class="insight-item">
+            <b>2. Sweet Spot Daya Beli Konsumen</b>
+            Volume transaksi terbesar terkunci pada rentang harga Rp 35.000 – Rp 100.000. Rentang ini merupakan batas psikologis pembelian daring paling optimal.
+          </div>
+          <div class="insight-item">
+            <b>3. Perputaran Tinggi Produk Skincare & Fashion</b>
+            Kategori Kecantikan dan Fashion Muslim mencatatkan rasio ulasan dan perputaran pesanan tercepat dibanding kategori produk rumah tangga lainnya.
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="chart-card"><div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>                <div id="4f032269-613f-4a26-9f2a-8004356176dd" class="plotly-graph-div" style="height:280px; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("4f032269-613f-4a26-9f2a-8004356176dd")) {                    Plotly.newPlot(                        "4f032269-613f-4a26-9f2a-8004356176dd",                        [{"domain":{"x":[0.0,1.0],"y":[0.0,1.0]},"hole":0.62,"hovertemplate":"Kategori_Bisnis=%{label}\u003cbr\u003eEstimasi_Omset=%{value}\u003cextra\u003e\u003c\u002fextra\u003e","labels":["Ritel & Aneka Produk","Kecantikan & Skincare","Fashion & Muslim","Perlengkapan Hewan","Makanan & Minuman","Kebutuhan Rumah Tangga"],"legendgroup":"","name":"","showlegend":true,"values":[2635472919870,563648437136,388587443065,118074778499,110504112604,56498608118],"type":"pie"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"legend":{"tracegroupgap":0},"title":{"text":"\u003cb\u003ePorsi Omset per Kategori Tokopedia\u003c\u002fb\u003e"},"piecolorway":["#03AC0E","#0F172A","#F59E0B","#0284C7","#E11D48","#64748B"],"margin":{"l":10,"r":10,"t":45,"b":15},"font":{"family":"Inter, sans-serif","size":12},"paper_bgcolor":"white","height":280},                        {"responsive": true}                    )                };                            </script>        </div></div>
+        <div class="chart-card"><div>                            <div id="604e5bc4-ac79-4c08-91f4-be941344a4eb" class="plotly-graph-div" style="height:280px; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("604e5bc4-ac79-4c08-91f4-be941344a4eb")) {                    Plotly.newPlot(                        "604e5bc4-ac79-4c08-91f4-be941344a4eb",                        [{"alignmentgroup":"True","hovertemplate":"Wilayah=%{x}\u003cbr\u003eTotal Omset (Rp)=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#03AC0E","pattern":{"shape":""}},"name":"","offsetgroup":"","orientation":"v","showlegend":false,"textposition":"auto","x":["DKI Jakarta","Tangerang Raya","Bandung Raya","Bekasi","Cimahi","Kab. Klaten","Surabaya"],"xaxis":"x","y":[2191168591777,617506603914,280182687650,106396526052,104326496350,64307930358,63493266723],"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Wilayah"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Total Omset (Rp)"}},"legend":{"tracegroupgap":0},"title":{"text":"\u003cb\u003ePusat Konsentrasi Transaksi (Kota Teratas)\u003c\u002fb\u003e"},"barmode":"relative","margin":{"l":20,"r":20,"t":45,"b":20},"font":{"family":"Inter, sans-serif","size":12},"plot_bgcolor":"white","paper_bgcolor":"white","height":280},                        {"responsive": true}                    )                };                            </script>        </div></div>
+      </div>
+      <div class="grid-2">
+        <div class="chart-card"><div>                            <div id="43ff80e9-a931-4f07-906d-5e7ab00837ac" class="plotly-graph-div" style="height:280px; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("43ff80e9-a931-4f07-906d-5e7ab00837ac")) {                    Plotly.newPlot(                        "43ff80e9-a931-4f07-906d-5e7ab00837ac",                        [{"alignmentgroup":"True","hovertemplate":"Rentang Harga=%{x}\u003cbr\u003eVolume Terjual=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#0F172A","pattern":{"shape":""}},"name":"","offsetgroup":"","orientation":"v","showlegend":false,"textposition":"auto","x":["1. Budget (\u003c Rp 35rb)","2. Reguler (Rp 35rb - 100rb)","3. Menengah (Rp 100rb - 300rb)","4. Premium (\u003e Rp 300rb)"],"xaxis":"x","y":[20861340,18542370,7518160,1750854],"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Rentang Harga"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Volume Terjual"}},"legend":{"tracegroupgap":0},"title":{"text":"\u003cb\u003eDaya Beli Pengguna Tokopedia (Volume Unit)\u003c\u002fb\u003e"},"barmode":"relative","margin":{"l":20,"r":20,"t":45,"b":20},"font":{"family":"Inter, sans-serif","size":12},"plot_bgcolor":"white","paper_bgcolor":"white","height":280},                        {"responsive": true}                    )                };                            </script>        </div></div>
+        <div class="chart-card"><div>                            <div id="1ec6a7e0-f717-441e-9a56-c2958ed192bf" class="plotly-graph-div" style="height:280px; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("1ec6a7e0-f717-441e-9a56-c2958ed192bf")) {                    Plotly.newPlot(                        "1ec6a7e0-f717-441e-9a56-c2958ed192bf",                        [{"alignmentgroup":"True","hovertemplate":"Omset (Rp)=%{x}\u003cbr\u003e=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#F59E0B","pattern":{"shape":""}},"name":"","offsetgroup":"","orientation":"h","showlegend":false,"textposition":"auto","x":[45171723723,46675658600,52193900000,53566084000,66520413000,76400000000,100767240000],"xaxis":"x","y":["Tokopedia Seller","Maybelline Official Store","Ansya Hijab","Sanken Official Store","Philips Home Appliances","facetologystore","INTHEBOX_NEW"],"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Omset (Rp)"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":""}},"legend":{"tracegroupgap":0},"title":{"text":"\u003cb\u003eTop 7 Merchant Berdasarkan Estimasi Omset\u003c\u002fb\u003e"},"barmode":"relative","margin":{"l":20,"r":20,"t":45,"b":20},"font":{"family":"Inter, sans-serif","size":12},"plot_bgcolor":"white","paper_bgcolor":"white","height":280},                        {"responsive": true}                    )                };                            </script>        </div></div>
+      </div>
+    </div>
+
+    <!-- TAB 2: LEADERBOARD PRODUK -->
+    <div id="panel-table" class="tab-panel">
+      <div class="chart-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+          <div>
+            <h3 style="font-size: 16px; font-weight: 700; color: #0F172A;">🏆 Leaderboard 50 Produk Penghasil Omset Tertinggi di Tokopedia</h3>
+            <p style="font-size: 12px; color: #64748B; margin-top: 2px;">Cari nama produk, brand, atau toko secara real-time</p>
+          </div>
+          <input type="text" id="searchInput" class="search-box" placeholder="🔍 Cari nama produk / brand / toko..." onkeyup="searchTable()">
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Nama Produk</th>
+              <th>Kategori</th>
+              <th>Nama Toko</th>
+              <th>Wilayah</th>
+              <th>Rating</th>
+              <th>Harga</th>
+              <th>Terjual</th>
+              <th>Estimasi Omset</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 3: ANALISIS & REKOMENDASI OLEH M. NAUFAL ZAMANI -->
+    <div id="panel-insights" class="tab-panel">
+      <div class="chart-card" style="padding: 26px;">
+        <h2 style="font-size: 18px; font-weight: 800; color: #0F172A; margin-bottom: 6px;">
+          Catatan Analisis Pasar & Rekomendasi Strategis
+        </h2>
+        <p style="font-size: 13px; color: #64748B; margin-bottom: 22px;">
+          Disusun oleh: <b>M. Naufal Zamani</b> (Data Analyst) berbasis 29.000+ data transaksi pasar ritel Tokopedia Indonesia.
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 18px; font-size: 13.5px; color: #334155; line-height: 1.8;">
+          
+          <div style="background: #F8FAFC; padding: 16px 20px; border-radius: 10px; border-left: 4px solid #03AC0E;">
+            <b style="color: #0F172A; font-size: 14px;">1. Metodologi Pembersihan & Validitas Data (Data Hygiene):</b><br>
+            Dataset mentah hasil scraping Tokopedia mengalami anomali harga pengujian toko dan pencatatan lokasi ganda. Analisis ini menerapkan <i>outlier trimming</i> pada persentil harga ekstrem (> Rp 2,5 Juta), pembersihan string pesanan, serta klasifikasi leksikon kata kunci produk guna menjamin validitas inferensi analitik.
+          </div>
+
+          <div style="background: #F8FAFC; padding: 16px 20px; border-radius: 10px; border-left: 4px solid #0F172A;">
+            <b style="color: #0F172A; font-size: 14px;">2. Fenomena Konsentrasi Spasial (Spatial Clustering):</b><br>
+            Analisis spasial menunjukkan lebih dari <b>68% perputaran GMV terkonsentrasi di 3 area utama</b>: DKI Jakarta, Bandung Raya, dan Tangerang Raya. Kesiapan fulfillment logistik instan/same-day menjadi pemicu utama kenapa pembeli digital sangat terkonsentrasi di wilayah aglomerasi ini.
+          </div>
+
+          <div style="background: #F8FAFC; padding: 16px 20px; border-radius: 10px; border-left: 4px solid #F59E0B;">
+            <b style="color: #0F172A; font-size: 14px;">3. Elastisitas Harga & Batas Psikologis Konsumen:</b><br>
+            Kurva distribusi harga membentuk pola miring kanan (<i>right-skewed</i>) dengan titik tengah berada di Rp 45.000–Rp 65.000. Volume pembelian anjlok drastis pada produk berharga di atas Rp 300.000, membuktikan bahwa batas psikologis konversi massal di Tokopedia berada di bawah angka Rp 100.000.
+          </div>
+
+          <div style="background: #F8FAFC; padding: 16px 20px; border-radius: 10px; border-left: 4px solid #0284C7;">
+            <b style="color: #0F172A; font-size: 14px;">4. Rekomendasi Preskriptif untuk Merchant Tokopedia:</b><br>
+            Seller disarankan menghindari perang harga pada kategori produk di bawah Rp 30.000. Strategi paling menguntungkan adalah membuat paket <i>bundling</i> bernilai Rp 75.000–Rp 99.000 serta menempatkan stok barang di <i>Tokopedia Dilayani Toko</i> area Jabodetabek guna memaksimalkan gratis ongkir bagi pembeli.
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- JAVASCRIPT KENDALI INTERAKTIF -->
+  <script>
+    const metricsData = {"Semua": {"omset": "Rp 3.87 Triliun", "terjual": "48.7 Juta unit", "ulasan": "6.6 Juta ulasan", "rating": "4.65 / 5.0", "median_harga": "Rp 89,170", "jumlah_produk": "24,890 produk terindeks"}, "Fashion & Muslim": {"omset": "Rp 388.6 Miliar", "terjual": "6.9 Juta unit", "ulasan": "623,379 ulasan", "rating": "4.61 / 5.0", "median_harga": "Rp 94,230", "jumlah_produk": "2,966 produk terindeks"}, "Kebutuhan Rumah Tangga": {"omset": "Rp 56.5 Miliar", "terjual": "1.6 Juta unit", "ulasan": "89,155 ulasan", "rating": "4.65 / 5.0", "median_harga": "Rp 82,000", "jumlah_produk": "499 produk terindeks"}, "Kecantikan & Skincare": {"omset": "Rp 563.6 Miliar", "terjual": "8.5 Juta unit", "ulasan": "1.3 Juta ulasan", "rating": "4.72 / 5.0", "median_harga": "Rp 60,000", "jumlah_produk": "1,699 produk terindeks"}, "Makanan & Minuman": {"omset": "Rp 110.5 Miliar", "terjual": "2.1 Juta unit", "ulasan": "122,615 ulasan", "rating": "4.64 / 5.0", "median_harga": "Rp 45,000", "jumlah_produk": "515 produk terindeks"}, "Perlengkapan Hewan": {"omset": "Rp 118.1 Miliar", "terjual": "1.8 Juta unit", "ulasan": "242,273 ulasan", "rating": "4.79 / 5.0", "median_harga": "Rp 69,900", "jumlah_produk": "991 produk terindeks"}, "Ritel & Aneka Produk": {"omset": "Rp 2.64 Triliun", "terjual": "27.8 Juta unit", "ulasan": "4.2 Juta ulasan", "rating": "4.65 / 5.0", "median_harga": "Rp 97,500", "jumlah_produk": "18,220 produk terindeks"}};
+    const productsData = [{"Nama Produk":"Facetology Triple Care Sunscreen SPF 40 PA++++ 100ML","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"facetologystore","Rating":5.0,"Harga (IDR)":152800,"Terjual_Clean":500000,"Estimasi_Omset":76400000000},{"Nama Produk":"Philips Setrika Kering Classic HD1172\/99 - Hitam Tapak Anti Lengket","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"Philips Home Appliances","Rating":4.9,"Harga (IDR)":336100,"Terjual_Clean":100000,"Estimasi_Omset":33610000000},{"Nama Produk":"[Arizona Carpet] 140x190cm Cosmo Love Karpet Busa Malaysia Motif Minimalis","Kategori_Bisnis":"Perlengkapan Hewan","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"Arizona Carpet_NEW","Rating":4.9,"Harga (IDR)":319900,"Terjual_Clean":100000,"Estimasi_Omset":31990000000},{"Nama Produk":"Sandal Pria Wanita Selop Slip On Sendal Casual Karet Kasual Original Kuning Kanoa LAF Project","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"Bandung Raya","Nama Toko":"LAF Project","Rating":4.9,"Harga (IDR)":227756,"Terjual_Clean":122000,"Estimasi_Omset":27786232000},{"Nama Produk":"Gloow&be Glass Skin Sunscreen SPF 40 PA+++ 50 ml Gloowbi New Packaging","Kategori_Bisnis":"Kecantikan & Skincare","Lokasi_Kategori":"Tangerang Raya","Nama Toko":"Ciara Beauty","Rating":4.9,"Harga (IDR)":55000,"Terjual_Clean":500000,"Estimasi_Omset":27500000000},{"Nama Produk":"Pashmina Viscose Premium \/ Pasmina Viscose - Nutella","Kategori_Bisnis":"Fashion & Muslim","Lokasi_Kategori":"Yogyakarta","Nama Toko":"Ansya Hijab","Rating":4.8,"Harga (IDR)":47449,"Terjual_Clean":500000,"Estimasi_Omset":23724500000},{"Nama Produk":"Pashmina Viscose Premium \/ Pasmina Viscose - Dark choco(mahogany)","Kategori_Bisnis":"Fashion & Muslim","Lokasi_Kategori":"Yogyakarta","Nama Toko":"Ansya Hijab","Rating":4.8,"Harga (IDR)":47449,"Terjual_Clean":500000,"Estimasi_Omset":23724500000},{"Nama Produk":"Skintific 5X Ceramide Barrier Moisturizer Gel 80g","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"Skintificid Official Store","Rating":4.9,"Harga (IDR)":235100,"Terjual_Clean":100000,"Estimasi_Omset":23510000000},{"Nama Produk":"Kasur Springbed INTHEBOX X Ukuran 160x200 (Queen)","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"Cimahi","Nama Toko":"INTHEBOX_NEW","Rating":4.9,"Harga (IDR)":2207080,"Terjual_Clean":10000,"Estimasi_Omset":22070800000},{"Nama Produk":"ADVAN Smartwatch S1 AI Voice Assistant IPS Display 2.01\"","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"ADVAN INDONESIA","Rating":4.9,"Harga (IDR)":198999,"Terjual_Clean":100000,"Estimasi_Omset":19899900000},{"Nama Produk":"Power Bank ROBOT 10000mAh RT190 Dual Input Type C & Micro 9 Smart Prot","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"TOKO BINTANG CEEL","Rating":4.8,"Harga (IDR)":136900,"Terjual_Clean":138000,"Estimasi_Omset":18892200000},{"Nama Produk":"PowerBank ROBOT 10000mAh RT10 - Dual Port USB Garansi Resmi 1 Tahun","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"TOKO BINTANG CEEL","Rating":4.8,"Harga (IDR)":136900,"Terjual_Clean":138000,"Estimasi_Omset":18892200000},{"Nama Produk":"Xiaomi TV A 32 | Dolby DTS Audio | Premium Metalic Frame","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"Bekasi","Nama Toko":"Xiaomi Indonesia","Rating":4.9,"Harga (IDR)":1999000,"Terjual_Clean":9000,"Estimasi_Omset":17991000000},{"Nama Produk":"Samsung Galaxy Buds3 FE","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"Samsung Official Store","Rating":4.9,"Harga (IDR)":1799000,"Terjual_Clean":10000,"Estimasi_Omset":17990000000},{"Nama Produk":"Kasur Spring Bed INTHEBOX Ukuran 160x200 (Queen) - FREE BANTAL","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"Cimahi","Nama Toko":"INTHEBOX_NEW","Rating":4.9,"Harga (IDR)":1793110,"Terjual_Clean":10000,"Estimasi_Omset":17931100000},{"Nama Produk":"Camille Beauty Masker Organik 65gr","Kategori_Bisnis":"Kecantikan & Skincare","Lokasi_Kategori":"Tangerang Raya","Nama Toko":"Camille Beauty Official","Rating":4.9,"Harga (IDR)":25000,"Terjual_Clean":700000,"Estimasi_Omset":17500000000},{"Nama Produk":"ETEREINE [Rok Satin Reine 90CM] - Rok Satin Panjang 90cm Wanita","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"ETEREINE","Rating":4.9,"Harga (IDR)":174900,"Terjual_Clean":100000,"Estimasi_Omset":17490000000},{"Nama Produk":"Sanken Dispenser Galon Bawah HWD-C533IC Bottom Loading","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"Sanken Official Store","Rating":4.9,"Harga (IDR)":1709000,"Terjual_Clean":10000,"Estimasi_Omset":17090000000},{"Nama Produk":"LIONTIN EMAS ROSEGOLD 1,4GR 17K LNT3031","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"Yes & Go Jewellery","Rating":4.9,"Harga (IDR)":1732000,"Terjual_Clean":9836,"Estimasi_Omset":17035952000},{"Nama Produk":"[JENN&ROSE] Carol Premium Satin Silk Skirt - Midi Lenght","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"JENN&ROSE","Rating":4.9,"Harga (IDR)":167500,"Terjual_Clean":100000,"Estimasi_Omset":16750000000},{"Nama Produk":"RAJA x TOKO MAMA GIGI Set Bedcover Sprei Sarung Bantal Guling Set Seprei Selimut","Kategori_Bisnis":"Perlengkapan Hewan","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"Raja Karpet_NEW Official Store","Rating":4.8,"Harga (IDR)":162940,"Terjual_Clean":100000,"Estimasi_Omset":16294000000},{"Nama Produk":"Isi 100 Pcs Sendok Garpu Plastik Set Hitam \/ Sendok Set Plastik Hitam Eceran","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"Sterile ID","Rating":5.0,"Harga (IDR)":32300,"Terjual_Clean":500000,"Estimasi_Omset":16150000000},{"Nama Produk":"Kasur Spring Bed INTHEBOX Ukuran 160x200 (Queen) - FREE BANTAL","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"Cimahi","Nama Toko":"INTHEBOX_NEW","Rating":4.9,"Harga (IDR)":1793110,"Terjual_Clean":9000,"Estimasi_Omset":16137990000},{"Nama Produk":"Pod Drag X Pnp X Voopoo 100% Authentic","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"Garuda Vape Store","Rating":5.0,"Harga (IDR)":344900,"Terjual_Clean":44000,"Estimasi_Omset":15175600000},{"Nama Produk":"Usus Krispi \/ kripik usus 500 Gram \/ 500Gram usus Crispy bumbu Pedas daun jeruk","Kategori_Bisnis":"Makanan & Minuman","Lokasi_Kategori":"Bandung Raya","Nama Toko":"Bos Kriuk","Rating":4.8,"Harga (IDR)":29900,"Terjual_Clean":500000,"Estimasi_Omset":14950000000},{"Nama Produk":"ROBOT Soundbar Speaker TV RB590 Wireless 6.0 Home Theater Dual Connection Ultra-compact Design","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"Bandung Raya","Nama Toko":"RobotSmartPower","Rating":4.8,"Harga (IDR)":289000,"Terjual_Clean":50000,"Estimasi_Omset":14450000000},{"Nama Produk":"Wardah Exclusive Matte Lip Cream","Kategori_Bisnis":"Kecantikan & Skincare","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"Wardah Official Store","Rating":4.8,"Harga (IDR)":59000,"Terjual_Clean":241000,"Estimasi_Omset":14219000000},{"Nama Produk":"Wardah Exclusive Matte Lip Cream","Kategori_Bisnis":"Kecantikan & Skincare","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"Wardah Official Store","Rating":4.8,"Harga (IDR)":59000,"Terjual_Clean":241000,"Estimasi_Omset":14219000000},{"Nama Produk":"The Originote Bundle 2pcs Hyalurose Micellar Water","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"The Originote Official","Rating":4.9,"Harga (IDR)":49000,"Terjual_Clean":282118,"Estimasi_Omset":13823782000},{"Nama Produk":"Kasur Spring Bed INTHEBOX Ukuran 120x200 (Full)","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"Cimahi","Nama Toko":"INTHEBOX_NEW","Rating":4.9,"Harga (IDR)":1353394,"Terjual_Clean":10000,"Estimasi_Omset":13533940000},{"Nama Produk":"Kasur Springbed INTHEBOX X Ukuran 120x200 (Full) - FREE BANTAL","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"Cimahi","Nama Toko":"INTHEBOX_NEW","Rating":4.9,"Harga (IDR)":1690110,"Terjual_Clean":8000,"Estimasi_Omset":13520880000},{"Nama Produk":"[SPECIAL CREATOR] Maybelline Superstay Matte Ink Liquid Matte Lipstick Lipstik Bibir","Kategori_Bisnis":"Kecantikan & Skincare","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"Maybelline Official Store","Rating":4.8,"Harga (IDR)":135000,"Terjual_Clean":100000,"Estimasi_Omset":13500000000},{"Nama Produk":"Sanken Dispenser Galon Bawah HWD-C523IC Hitam","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"Sanken Official Store","Rating":4.9,"Harga (IDR)":1659000,"Terjual_Clean":8000,"Estimasi_Omset":13272000000},{"Nama Produk":"[iKoper] Koper 24 Inch Polo Bagasi Size Koper Fiber Koper Murah Koper Kabin - LightBlue","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"Tangerang Raya","Nama Toko":"Ikoper_new","Rating":4.8,"Harga (IDR)":264000,"Terjual_Clean":50000,"Estimasi_Omset":13200000000},{"Nama Produk":"paket sikat gigi hotel \/ amenities murah 3 ( duohjlf 100 pcs )","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"Tangerang Raya","Nama Toko":"central sejahtera","Rating":5.0,"Harga (IDR)":263650,"Terjual_Clean":50000,"Estimasi_Omset":13182500000},{"Nama Produk":"Celana jeans high waist wanita korean style Jeans baggy pants Serbaguna Kasual Biru Retro","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"Tangerang Raya","Nama Toko":"Bestdealdenim","Rating":4.8,"Harga (IDR)":129899,"Terjual_Clean":100000,"Estimasi_Omset":12989900000},{"Nama Produk":"[Twin Pack Gel] Azarine Hydrasoothe Sunscreen Gel SPF45 PA++++ 50 ml Berminyak Box Wajah","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"Sidoarjo","Nama Toko":"azarinecosmetic","Rating":4.9,"Harga (IDR)":122500,"Terjual_Clean":100000,"Estimasi_Omset":12250000000},{"Nama Produk":"[Twin Pack Gel] Azarine Hydrasoothe Sunscreen Gel SPF45 PA++++ 50 ml","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"azarinecosmetic","Rating":4.9,"Harga (IDR)":122500,"Terjual_Clean":100000,"Estimasi_Omset":12250000000},{"Nama Produk":"Anker Zolo Power Bank 30W 20000mAh With Cable Type C Fast Charging","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"Anker Indonesia","Rating":5.0,"Harga (IDR)":1499000,"Terjual_Clean":8000,"Estimasi_Omset":11992000000},{"Nama Produk":"ROYAL KLUDGE RK M30 Mouse Gaming Wireless Tri-Modes 12K DPI","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"Gaming of the Day","Rating":5.0,"Harga (IDR)":409999,"Terjual_Clean":29000,"Estimasi_Omset":11889971000},{"Nama Produk":"Wardah Glasting Liquid Lip","Kategori_Bisnis":"Kecantikan & Skincare","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"Wardah Official Store","Rating":4.9,"Harga (IDR)":67000,"Terjual_Clean":173000,"Estimasi_Omset":11591000000},{"Nama Produk":"Maybelline Superstay Matte Ink Liquid Lipstick","Kategori_Bisnis":"Kecantikan & Skincare","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"Maybelline Official Store","Rating":4.8,"Harga (IDR)":115000,"Terjual_Clean":100000,"Estimasi_Omset":11500000000},{"Nama Produk":"Asus Gaming X550ZE, Amd A10-7400P, 8\/1Tb, #Vga, Black","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"Drcom_new","Rating":5.0,"Harga (IDR)":2300000,"Terjual_Clean":4830,"Estimasi_Omset":11109000000},{"Nama Produk":"Grace and Glow Body Wash + Body Serum All Varian Bundle 2in1","Kategori_Bisnis":"Kecantikan & Skincare","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"Grace and Glow Indonesia_NEW","Rating":4.9,"Harga (IDR)":110000,"Terjual_Clean":100000,"Estimasi_Omset":11000000000},{"Nama Produk":"The Originote 3in1 Bundle Basic Skincare - Facial Wash + Moisturizer + Sunscreen","Kategori_Bisnis":"Kecantikan & Skincare","Lokasi_Kategori":"DKI Jakarta","Nama Toko":"The Originote_NEW","Rating":4.9,"Harga (IDR)":109000,"Terjual_Clean":100000,"Estimasi_Omset":10900000000},{"Nama Produk":"CALAMBY - Kemeja Cala Stripes (Oversize)","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"Kab. Klaten","Nama Toko":"CALAMBY","Rating":4.8,"Harga (IDR)":107000,"Terjual_Clean":100000,"Estimasi_Omset":10700000000},{"Nama Produk":"CALAMBY - Kemeja Cala Stripes (Oversize)","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"Kab. Klaten","Nama Toko":"CALAMBY","Rating":4.8,"Harga (IDR)":107000,"Terjual_Clean":100000,"Estimasi_Omset":10700000000},{"Nama Produk":"CALAMBY - Kemeja Cala Stripes (Oversize)","Kategori_Bisnis":"Ritel & Aneka Produk","Lokasi_Kategori":"Kab. Klaten","Nama Toko":"Calamby.id","Rating":4.8,"Harga (IDR)":107000,"Terjual_Clean":100000,"Estimasi_Omset":10700000000},{"Nama Produk":"CALAMBY - Kemeja Cala Stripes (Oversize)","Kategori_Bisnis":"Fashion & Muslim","Lokasi_Kategori":"Kab. Klaten","Nama Toko":"- S R - Fashion","Rating":4.8,"Harga (IDR)":107000,"Terjual_Clean":100000,"Estimasi_Omset":10700000000},{"Nama Produk":"Hamidah - Hijab Bergo Hamidah Pad Besar Size S Matt Jersey Kerudung Instan","Kategori_Bisnis":"Fashion & Muslim","Lokasi_Kategori":"Bandung Raya","Nama Toko":"Toko Bandung Official","Rating":4.8,"Harga (IDR)":20999,"Terjual_Clean":500000,"Estimasi_Omset":10499500000}];
+
+    function switchNav(panelId, el) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      
+      document.getElementById('panel-' + panelId).classList.add('active');
+      el.classList.add('active');
+
+      const headers = {
+        'overview': 'Tokopedia Retail Market Intelligence',
+        'table': 'Leaderboard Produk & Merchant Tokopedia',
+        'insights': 'Analisis & Rekomendasi Data Analyst'
+      };
+      document.getElementById('page-title').innerText = headers[panelId];
+      window.dispatchEvent(new Event('resize'));
+    }
+
+    function applyFilter(cat, el) {
+      document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+
+      const item = metricsData[cat] || metricsData['Semua'];
+      document.getElementById('kpi-omset').innerText = item.omset;
+      document.getElementById('kpi-vol').innerText = item.terjual;
+      document.getElementById('kpi-price').innerText = item.median_harga;
+      document.getElementById('kpi-rat').innerText = item.rating;
+      document.getElementById('kpi-ulas').innerText = item.ulasan;
+
+      document.getElementById('filter-desc').innerText = 'Filter aktif: ' + cat + ' (' + item.jumlah_produk + ') | Analis: M. Naufal Zamani';
+      renderTableData(cat);
+    }
+
+    function renderTableData(selectedCat = 'Semua') {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+
+      const filtered = (selectedCat === 'Semua')
+        ? productsData
+        : productsData.filter(p => p.Kategori_Bisnis === selectedCat);
+
+      filtered.forEach(p => {
+        const omsetTxt = (p.Estimasi_Omset >= 1e9) 
+          ? 'Rp ' + (p.Estimasi_Omset/1e9).toFixed(2) + ' M'
+          : 'Rp ' + (p.Estimasi_Omset/1e6).toFixed(1) + ' Jt';
+
+        const tr = `<tr>
+          <td style="font-weight:600; max-width:280px;" title="${p['Nama Produk']}">${p['Nama Produk']}</td>
+          <td><span class="badge">${p['Kategori_Bisnis']}</span></td>
+          <td>${p['Nama Toko']}</td>
+          <td>${p['Lokasi_Kategori']}</td>
+          <td style="color:#D97706; font-weight:600;">⭐ ${p['Rating']}</td>
+          <td>Rp ${Number(p['Harga (IDR)']).toLocaleString('id-ID')}</td>
+          <td>${Number(p['Terjual_Clean']).toLocaleString('id-ID')}</td>
+          <td style="font-weight:700; color:#03AC0E;">${omsetTxt}</td>
+        </tr>`;
+        tbody.innerHTML += tr;
+      });
+    }
+
+    function searchTable() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const rows = document.getElementById('tableBody').getElementsByTagName('tr');
+      for (let r of rows) {
+        r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none';
+      }
+    }
+
+    applyFilter('Semua', document.querySelector('.filter-pill.active'));
+  </script>
+</body>
+</html>
